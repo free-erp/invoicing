@@ -1,0 +1,201 @@
+package com.jzh.demo.client.report.manager;
+
+import com.jdatabeans.beans.CPanel;
+import com.jdatabeans.beans.data.IDataRow;
+import com.jdatabeans.beans.data.ObjectDataRow;
+import com.jdatabeans.beans.data.table.ITableColumnModel;
+import com.jdatabeans.beans.data.table.ITableModel;
+import com.jdatabeans.beans.data.table.JDataTableColumn;
+import com.jzh.demo.client.main.Main;
+import com.jzh.demo.client.report.CBaseQueryWindow;
+import com.jzh.erp.entity.accounting.DailyReportPo;
+import com.jzh.erp.service.IManagerService;
+import com.jzh.erp.service.sale.SaleQueryVo;
+import java.awt.Dimension;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Currency;
+import java.util.Date;
+import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+
+/**
+ *
+ * @author liufei
+ */
+public class CManagerMonthQueryWindow extends CBaseQueryWindow
+{
+    private JComboBox beginDateField;
+    
+    public CManagerMonthQueryWindow(String title)
+    {
+        super(title);
+    }
+
+    protected int getPermission() {
+        return 65535;
+    }
+
+    protected void clearInfo()
+    {
+    }
+
+    protected void select()
+    {
+
+        SaleQueryVo vo = new SaleQueryVo(Main.getMainFrame().getCompany());
+   
+        String obj = null;
+        if(!beginDateField.getSelectedItem().equals(""))
+        {
+            obj = beginDateField.getSelectedItem().toString();
+               SimpleDateFormat formatter = new SimpleDateFormat("yyyyMM");//format格式："yyyy-MM-dd"
+           ParsePosition pos = new ParsePosition(0);
+           Date st = formatter.parse(obj, pos);
+         java.sql.Date strtodate=new java.sql.Date(st.getTime());
+                vo.setStartDatePo(strtodate);
+        }
+
+        if(!beginDateField.getSelectedItem().equals(""))
+        {
+            obj = beginDateField.getSelectedItem().toString();
+             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMM");//format格式："yyyy-MM-dd"
+           ParsePosition pos = new ParsePosition(0);
+  
+           Date st = formatter.parse(obj, pos);
+                  java.sql.Date str =new java.sql.Date(st.getTime());
+           if(str.getMonth()<12){
+           str.setMonth(str.getMonth()+2);
+           }else{
+           str.setYear(str.getYear()+1);
+           }
+                vo.setEndDatePo(str);
+        }
+        ITableModel model = this.dataTable.getTableModel();
+        IManagerService managerService = Main.getServiceManager().getManagerService();
+        this.dataSource.clear();
+        List<DailyReportPo> DailyReportPos =managerService.getCountManagerForm(vo);
+        if(DailyReportPos == null || DailyReportPos.size() == 0)
+        {
+            this.clearInfo();
+        }
+        for(DailyReportPo po : DailyReportPos)
+        {
+            IDataRow dataRow = new ObjectDataRow(po, "id", null);
+            model.insertDataRow(dataRow);
+        }
+    }
+
+    protected CPanel getMainPanel()
+    {
+        CPanel panel = new CPanel();
+        panel.setBorder(BorderFactory.createEtchedBorder());
+		panel.setPreferredSize(new Dimension(700,40));
+		panel.setLayout(null);
+         this.clearButton.setVisible(false);
+              Date date = new Date();
+     int d =date.getMonth()+1;
+     int s =date.getYear()+1900;
+    beginDateField = new JComboBox();
+int n;
+  String f =Integer.toString(s);
+  String g="0";
+for(n=1;n<13;n++){
+            String gf =Integer.toString(n);
+               String a;
+            if(n<10){
+          a=f+g+gf;
+            }else{
+                a=f+gf;
+            }
+       beginDateField.addItem(a);
+    }
+   String b =Integer.toString(d);
+   String u;
+   if(d<10){
+       u=f+g+b;
+   }else{
+       u=f+b;
+   }
+    beginDateField.setSelectedItem(u);
+
+        int x = 60;
+        int y = 15;
+        panel.addComponent(beginDateField, x , y, 120, 20, "开始日期", 50);
+        panel.addComponent(selectButton, x + 300, y, 75, 25);
+        panel.addComponent(clearButton, x + 380, y, 75, 25);
+
+        return panel;
+    }
+
+    protected void initColumns()
+    {
+        ITableColumnModel columnModel = this.dataTable.getTableColumnModel();
+        JDataTableColumn column = new JDataTableColumn();
+        column.setHeaderText("单据日期");
+        column.setColumnName("formDate");
+        column.setWidth(80);
+        column.setValueType(Date.class);
+        columnModel.addColumn(column);
+        
+        column = new JDataTableColumn();
+        column.setHeaderText("销售总额");
+        column.setColumnName("saleMoney");
+        column.setValueType(Currency.class);
+        column.setWidth(80);
+        columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+        column.setHeaderText("收款总额");
+        column.setColumnName("receiveMoney");
+        column.setValueType(Currency.class);
+        column.setWidth(80);
+        columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+        column.setHeaderText("毛利");
+        column.setColumnName("grossProfitMoney");
+        column.setValueType(Currency.class);
+        column.setWidth(80);
+        columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+        column.setHeaderText("成本");
+        column.setColumnName("cost");
+        column.setValueType(Currency.class);
+        column.setWidth(80);
+        columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+        column.setHeaderText("采购总额");
+        column.setColumnName("purchaseMoney");
+        column.setValueType(Currency.class);
+        column.setWidth(80);
+        columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+        column.setHeaderText("付款总额");
+        column.setColumnName("paymentMoney");
+        column.setValueType(Currency.class);
+        column.setWidth(80);
+        columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+        column.setHeaderText("现金余额");
+        column.setColumnName("cashMoney");
+        column.setValueType(Currency.class);
+        column.setWidth(80);
+        columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+        column.setHeaderText("库存总额");
+        column.setColumnName("stockMoney");
+        column.setValueType(Currency.class);
+        column.setWidth(80);
+        columnModel.addColumn(column);
+    }
+
+
+
+}

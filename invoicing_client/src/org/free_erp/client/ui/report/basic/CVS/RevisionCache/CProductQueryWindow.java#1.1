@@ -1,0 +1,156 @@
+package com.jzh.demo.client.report.basic;
+
+import com.jdatabeans.beans.CField;
+import com.jdatabeans.beans.CPanel;
+import com.jdatabeans.beans.data.JDataComboBox;
+import com.jdatabeans.beans.data.JDataPanelComboBox;
+import com.jdatabeans.beans.data.table.ITableColumnModel;
+import com.jdatabeans.beans.data.table.JDataTableColumn;
+import com.jzh.demo.client.main.Main;
+import com.jzh.demo.client.report.CBaseQueryWindow;
+import com.jzh.erp.entity.base.Product;
+import com.jzh.erp.entity.base.ProductCatalog;
+import java.awt.Dimension;
+import java.util.Currency;
+import javax.swing.BorderFactory;
+
+/**
+ *
+ * @author liufei
+ */
+public class CProductQueryWindow extends CBaseQueryWindow
+{
+    private JDataComboBox catalogField;
+    private JDataPanelComboBox numberField;
+    private JDataPanelComboBox nameField;
+    private CField shortNameField;
+    private CField helpCodeField;
+    private CField barCodeField;
+    public CProductQueryWindow(String title)
+    {
+        super(title);
+    }
+
+    protected int getPermission()
+    {
+        return 65535;
+    }
+
+    @Override
+    protected void clearInfo()
+    {
+        
+    }
+
+    @Override
+    protected void select()
+    {
+        
+    }
+
+    @Override
+    protected CPanel getMainPanel()
+    {
+        CPanel panel = new CPanel();
+        panel.setBorder(BorderFactory.createEtchedBorder());
+		panel.setPreferredSize(new Dimension(700,80));
+		panel.setLayout(null);
+        catalogField = new JDataComboBox(ProductCatalog.class,Main.getMainFrame().getObjectsPool().getProductCatalogs());
+        numberField = new JDataPanelComboBox("", Product.class, this.dataSource, Main.getMainFrame().getProductSelectPanel(), "number");
+        nameField = new JDataPanelComboBox("", Product.class, this.dataSource, Main.getMainFrame().getProductSelectPanel(), "name");
+        shortNameField = new CField();
+        helpCodeField = new CField();
+        barCodeField = new CField();
+        
+        int x = 60;
+        int y = 15;
+        panel.addComponent(catalogField, x, y, 120, 20, "类别", 50);
+        panel.addComponent(numberField, x + 170, y, 100, 20, "商品编号", 50);
+        panel.addComponent(nameField, x + 320, y, 120, 20, "商品名称", 50);
+        panel.addComponent(shortNameField, x , y + 25, 120, 20, "商品简称", 50);
+        panel.addComponent(helpCodeField, x + 170, y + 25, 100, 20, "助记码", 50);
+        panel.addComponent(barCodeField, x + 320, y + 25, 100, 20, "条形码", 50);
+        panel.addComponent(selectButton, x + 440, y + 25, 75, 25);
+        panel.addComponent(clearButton, x + 520, y + 25, 75, 25);
+
+        return panel;
+    }
+
+    @Override
+    protected void initColumns()
+    {
+        ITableColumnModel columnModel = this.dataTable.getTableColumnModel();
+		JDataTableColumn column = new JDataTableColumn();
+		column.setHeaderText("类别编号");
+		column.setColumnName("catalog.number");
+		column.setWidth(60);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("类别名称");
+		column.setColumnName("catalog.name");
+		column.setWidth(80);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("编号");
+		column.setColumnName("number");
+		column.setWidth(60);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("名称");
+		column.setColumnName("name");
+		column.setWidth(140);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("规格");
+		column.setColumnName("spec");
+		column.setWidth(80);
+		columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+		column.setHeaderText("采购价");
+		column.setColumnName("stockPrice");
+		column.setValueType(Currency.class);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("零售价");
+		column.setColumnName("retailPrice");
+		column.setValueType(Currency.class);
+		columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+		column.setHeaderText("单位");
+		column.setColumnName("smallUnit");
+		column.setWidth(40);
+
+        columnModel.addColumn(column);
+        column = new JDataTableColumn();
+		column.setHeaderText("生产厂家");
+		column.setColumnName("factory");
+		column.setWidth(120);
+		columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+		column.setHeaderText("产地");
+		column.setColumnName("area");
+		column.setWidth(40);
+		columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+		column.setHeaderText("助记码");
+		column.setColumnName("code");
+		column.setWidth(50);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("停用");
+		column.setColumnName("status");
+		column.setWidth(40);
+		column.setValueType(Boolean.class);
+		columnModel.addColumn(column);
+    }
+}

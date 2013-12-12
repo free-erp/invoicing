@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.free_erp.service.entity.base.Storage" schema="APP" table="STORAGE">
+    <id name="id" type="java.lang.Integer">
+      <column name="STORAGE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS" not-null="true"/>
+    </property>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="S_NO"/>
+    </property>
+    <property name="name" type="java.lang.String">
+      <column length="30" name="STORAGE_NAME"/>
+    </property>
+    <property name="shortName" type="java.lang.String">
+      <column length="30" name="S_NAME"/>
+    </property>
+    <property name="type" type="java.lang.String">
+      <column length="30" name="S_TYPE"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="EMPLOYEE_ID" lazy="false" name="employee"/>
+    <property name="phone" type="java.lang.String">
+      <column length="20" name="PHONE"/>
+    </property>
+    <property name="contact" type="java.lang.String">
+      <column length="10" name="CONTACT"/>
+    </property>
+    <property name="address" type="java.lang.String">
+      <column length="60" name="ADDRESS"/>
+    </property>
+    <property name="postNumber" type="java.lang.String">
+      <column length="6" name="POST_NUMBER"/>
+    </property>
+    <property name="description" type="java.lang.String">
+      <column name="DESCRIPTION"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.InitialStoragePo" schema="APP" table="INITIAL_STORAGE">
+    <id name="id" type="java.lang.Integer">
+      <column name="INITIAL_STORAGE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="C_NO" not-null="true"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="8" name="FORM_DATE"/>
+    </property>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="EMPLOYEE_ID" lazy="false" name="employee"/>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totailMoney" type="java.lang.Double">
+      <column name="T_MONEY" precision="18"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS" not-null="true"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="INITIAL_STORAGE_ID" not-null="true"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.storage.InitialStorageDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.InitialStorageDetailPo" schema="APP" table="INITIAL_STORAGE_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="IS_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT"/>
+    </property>
+    <property name="shelf" type="java.lang.String">
+      <column length="30" name="SHELF"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one access="property" cascade="none" class="org.free_erp.service.entity.storage.InitialStoragePo" column="initial_storage_id" insert="true" lazy="false" name="mainObject" not-null="true" outer-join="auto" update="true"/>
+  </class>
+  <class dynamic-insert="true" dynamic-update="true" name="org.free_erp.service.entity.storage.InStoragePo" schema="APP" table="IN_STORAGE">
+    <id name="id" type="java.lang.Integer">
+      <column name="IN_STORAGE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="I_NO" not-null="true"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="8" name="FORM_DATE"/>
+    </property>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="EMPLOYEE_ID" lazy="false" name="employee"/>
+    <many-to-one class="org.free_erp.service.entity.base.Customer" column="customer_id" lazy="false" name="customer"/>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totailMoney" type="java.lang.Double">
+      <column name="T_MONEY" precision="18"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="IN_STORAGE_ID"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.storage.InStorageDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class dynamic-insert="false" dynamic-update="false" name="org.free_erp.service.entity.storage.InStorageDetailPo" schema="APP" table="IN_STORAGE_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="IN_STORAGE_DETAIL_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT"/>
+    </property>
+    <property name="shelf" type="java.lang.String">
+      <column length="30" name="SHELF"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one class="org.free_erp.service.entity.storage.InStoragePo" column="in_storage_id" lazy="false" name="mainObject"/>
+    <!-- outer-join="auto" update="true" insert="true" access="property" not-null="true"></many-to-one>-->
+  </class>
+  <class name="org.free_erp.service.entity.storage.OutStoragePo" schema="APP" table="OUT_STORAGE">
+    <id name="id" type="java.lang.Integer">
+      <column name="OUT_STORAGE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="O_NO" not-null="true"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="8" name="FORM_DATE"/>
+    </property>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="EMPLOYEE_ID" lazy="false" name="employee"/>
+    <many-to-one class="org.free_erp.service.entity.base.Customer" column="customer_id" lazy="false" name="customer"/>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totailMoney" type="java.lang.Double">
+      <column name="T_MONEY" precision="18"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="OUT_STORAGE_ID" not-null="true"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.storage.OutStorageDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.OutStorageDetailPo" schema="APP" table="OUT_STORAGE_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="OS_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18"/>
+    </property>
+    <property name="storageAmount" type="java.lang.Double">
+      <column name="STORAGE_AMOUNT"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one access="property" cascade="none" class="org.free_erp.service.entity.storage.OutStoragePo" column="out_storage_id" insert="true" lazy="false" name="mainObject" not-null="true" outer-join="auto" update="true"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.StorageProductPo" schema="APP" table="STORAGE_PRODUCT">
+    <id name="id" type="java.lang.Integer">
+      <column name="SP_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT"/>
+    </property>
+    <property name="shelf" type="java.lang.String">
+      <column length="30" name="SHELF"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.StorageChangeLog" schema="APP" table="STORAGE_change_log">
+    <id name="id" type="java.lang.Integer">
+      <column name="storage_change_log_id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="8" name="FORM_DATE"/>
+    </property>
+    <property name="formNumber" type="java.lang.String">
+      <column length="32" name="form_no"/>
+    </property>
+    <property name="changeType" type="java.lang.String">
+      <column length="32" name="change_type"/>
+    </property>
+    <property name="remark" type="java.lang.String">
+      <column length="32" name="remark"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="changedAmount" type="java.lang.Double">
+      <column name="changed_amount" precision="18"/>
+    </property>
+    <property name="changedPrice" type="java.lang.Double">
+      <column name="changed_price"/>
+    </property>
+    <property name="currentAmount" type="java.lang.Double">
+      <column name="current_amount" precision="18"/>
+    </property>
+    <property name="currentPrice" type="java.lang.Double">
+      <column name="current_price"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.CheckStoragePo" schema="APP" table="CHECK_STORAGE">
+    <id name="id" type="java.lang.Integer">
+      <column name="CHECK_STORAGE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="C_NO" not-null="true"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="8" name="FORM_DATE"/>
+    </property>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="EMPLOYEE_ID" lazy="false" name="employee"/>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totailMoney" type="java.lang.Double">
+      <column name="T_MONEY" precision="18"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS" not-null="true"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="CHECK_STORAGE_ID" not-null="true"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.storage.CheckStorageDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.CheckStorageDetailPo" schema="APP" table="CHECK_STORAGE_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="CS_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18"/>
+    </property>
+    <property name="oldAmount" type="java.lang.Double">
+      <column name="OLD_AMOUNT"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT"/>
+    </property>
+    <property name="shelf" type="java.lang.String">
+      <column length="30" name="SHELF"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one access="property" cascade="none" class="org.free_erp.service.entity.storage.CheckStoragePo" column="check_storage_id" insert="true" lazy="false" name="mainObject" not-null="true" outer-join="auto" update="true"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.LossStoragePo" schema="APP" table="LOSS_STORAGE">
+    <id name="id" type="java.lang.Integer">
+      <column name="LOSS_STORAGE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="L_NO" not-null="true"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="8" name="FORM_DATE"/>
+    </property>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="EMPLOYEE_ID" lazy="false" name="employee"/>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totailMoney" type="java.lang.Double">
+      <column name="T_MONEY" precision="18"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS" not-null="true"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="LOSS_STORAGE_ID" not-null="true"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.storage.LossStorageDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.LossStorageDetailPo" schema="APP" table="LOSS_STORAGE_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="LS_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18"/>
+    </property>
+    <property name="oldAmount" type="java.lang.Double">
+      <column name="oldAmount"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT"/>
+    </property>
+    <property name="shelf" type="java.lang.String">
+      <column length="30" name="SHELF"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one access="property" cascade="none" class="org.free_erp.service.entity.storage.LossStoragePo" column="LOSS_STORAGE_ID" insert="true" lazy="false" name="mainObject" not-null="true" outer-join="auto" update="true"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.MinMaxStoragePo" schema="APP" table="MIN_MAX_STORAGE">
+    <id name="id" type="java.lang.Integer">
+      <column name="MIN_MAX_STORAGE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="MM_NO" not-null="true"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="8" name="FORM_DATE"/>
+    </property>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="EMPLOYEE_ID" lazy="false" name="employee"/>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS" not-null="true"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="MIN_MAX_STORAGE_ID" not-null="true"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.storage.MinMaxStorageDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.MinMaxStorageDetailPo" schema="APP" table="MIN_MAX_STORAGE_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="MM_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="shelf" type="java.lang.String">
+      <column length="30" name="SHELF"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <property name="minAmount" type="java.lang.Double">
+      <column name="MINCOUNT"/>
+    </property>
+    <property name="maxAmount" type="java.lang.Double">
+      <column name="MAXCOUNT"/>
+    </property>
+    <many-to-one access="property" cascade="none" class="org.free_erp.service.entity.storage.MinMaxStoragePo" column="MIN_MAX_STORAGE_ID" insert="true" lazy="false" name="mainObject" not-null="true" outer-join="auto" update="true"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.MoveStoragePo" schema="APP" table="MOVE_STORAGE">
+    <id name="id" type="java.lang.Integer">
+      <column name="MOVE_STORAGE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="formDate" type="java.util.Date">
+      <column length="8" name="FORM_DATE"/>
+    </property>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="M_NO" not-null="true"/>
+    </property>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="EMPLOYEE_ID" lazy="false" name="employee"/>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totailMoney" type="java.lang.Double">
+      <column name="T_MONEY" precision="18"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS" not-null="true"/>
+    </property>
+    <property name="outStorageId" type="java.lang.Integer">
+      <column name="out_storage_id" not-null="true"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="MOVE_STORAGE_ID" not-null="true"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.storage.MoveStorageDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.MoveStorageDetailPo" schema="APP" table="MOVE_STORAGE_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="MS_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT"/>
+    </property>
+    <property name="oldAmount" type="java.lang.Double">
+      <column name="oldAmount"/>
+    </property>
+    <property name="shelf" type="java.lang.String">
+      <column length="30" name="SHELF"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one access="property" cascade="none" class="org.free_erp.service.entity.storage.MoveStoragePo" column="MOVE_STORAGE_ID" insert="true" lazy="false" name="mainObject" not-null="true" outer-join="auto" update="true"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.OutflowStoragePo" schema="APP" table="OUTFLOW_STORAGE">
+    <id name="id" type="java.lang.Integer">
+      <column name="OUTFLOW_STORAGE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="O_NO" not-null="true"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="8" name="FORM_DATE"/>
+    </property>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="EMPLOYEE_ID" lazy="false" name="employee"/>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totailMoney" type="java.lang.Double">
+      <column name="T_MONEY" precision="18"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS" not-null="true"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="OUTFLOW_STORAGE_ID" not-null="true"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.storage.OutflowStorageDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.OutflowStorageDetailPo" schema="APP" table="OUTFLOW_STORAGE_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="OS_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18"/>
+    </property>
+    <property name="oldAmount" type="java.lang.Double">
+      <column name="oldAmount"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT"/>
+    </property>
+    <property name="shelf" type="java.lang.String">
+      <column length="30" name="SHELF"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one access="property" cascade="none" class="org.free_erp.service.entity.storage.OutflowStoragePo" column="OUTFLOW_STORAGE_ID" insert="true" lazy="false" name="mainObject" not-null="true" outer-join="auto" update="true"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.PriceStoragePo" schema="APP" table="PRICE_STORAGE">
+    <id name="id" type="java.lang.Integer">
+      <column name="PRICE_STORAGE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="formDate" type="java.util.Date">
+      <column length="8" name="FORM_DATE"/>
+    </property>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="P_NO" not-null="true"/>
+    </property>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="EMPLOYEE_ID" lazy="false" name="employee"/>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totailMoney" type="java.lang.Double">
+      <column name="T_MONEY" precision="18"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS" not-null="true"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="PRICE_STORAGE_ID" not-null="true"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.storage.PriceStorageDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.PriceStorageDetailPo" schema="APP" table="PRICE_STORAGE_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="PS_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="oldPrice" type="java.lang.Double">
+      <column name="OLD_PRICE" precision="18"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one access="property" cascade="none" class="org.free_erp.service.entity.storage.PriceStoragePo" column="PRICE_STORAGE_ID" insert="true" lazy="false" name="mainObject" not-null="true" outer-join="auto" update="true"/>
+  </class>
+  <class name="org.free_erp.service.entity.storage.StorageAlertPo" schema="APP" table="storage_min_max">
+    <id name="id" type="java.lang.Integer">
+      <column name="storage_min_max_id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="minAmount" type="java.lang.Double">
+      <column name="MIN_AMOUNT"/>
+    </property>
+    <property name="maxAmount" type="java.lang.Double">
+      <column name="MAX_AMOUNT"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+</hibernate-mapping>

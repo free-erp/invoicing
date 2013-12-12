@@ -1,0 +1,927 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="org.free_erp.service.entity.sale.SalePo" schema="APP" table="SALE">
+    <id name="id" type="java.lang.Integer">
+      <column name="SALE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="32" name="s_no"/>
+    </property>
+    <property name="createDate" type="java.util.Date">
+      <column length="26" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.util.Date">
+      <column length="26" name="MODIFY_DATE"/>
+    </property>
+    <property name="supplier" type="java.lang.String">
+      <column length="30" name="SUPPLIER"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="10" name="FORM_DATE"/>
+    </property>
+    <property name="chargePerson" type="java.lang.String">
+      <column length="30" name="CHARGE_PERSON"/>
+    </property>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="TOTAL_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="offersMoney" type="java.lang.Double">
+      <column name="offer_money" precision="18" scale="0"/>
+    </property>
+    <property name="clearing" type="java.lang.String">
+      <column length="30" name="CLEARING"/>
+    </property>
+    <property name="pay" type="java.lang.String">
+      <column length="30" name="PAY"/>
+    </property>
+    <property name="payTerm" type="java.lang.Integer">
+      <column name="PAY_TIME"/>
+    </property>
+    <property name="receiving" type="java.lang.String">
+      <column length="30" name="RECEIVING"/>
+    </property>
+    <property name="delivery" type="java.lang.String">
+      <column length="30" name="DELIVERY"/>
+    </property>
+    <property name="receivingPhone" type="java.lang.String">
+      <column length="20" name="RECEIVING_PHONE"/>
+    </property>
+    <property name="receivingCode" type="java.lang.String">
+      <column length="10" name="RECEIVING_CODE"/>
+    </property>
+    <property name="receivingAddress" type="java.lang.String">
+      <column length="60" name="RECEIVING_ADDRESS"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS"/>
+    </property>
+    <property name="systemStatus" type="java.lang.Integer">
+      <column name="system_status"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="SALE_ID" not-null="true"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.sale.SaleDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="employee_id" lazy="false" name="employee"/>
+    <many-to-one class="org.free_erp.service.entity.base.Customer" column="customer_id" lazy="false" name="customer"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+    <many-to-one class="org.free_erp.service.entity.sale.SaleOrderPo" column="ORDER_ID" lazy="false" name="Order"/>
+    <many-to-one class="org.free_erp.service.entity.accounting.AffordType" column="AFFORD_TYPE_ID" lazy="false" name="payFashion"/>
+    <many-to-one class="org.free_erp.service.entity.accounting.ClearingType" column="CLEARING_TYPE_ID" lazy="false" name="balanceFashion"/>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SaleDetailPo" schema="APP" table="SALE_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="SALE_DETAIL_ID"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one class="org.free_erp.service.entity.sale.SalePo" column="SALE_ID" lazy="false" name="mainObject"/>
+    <property name="taxprice" type="java.lang.Double">
+      <column name="TAXPRICE" precision="18"/>
+    </property>
+    <property name="tax" type="java.lang.Integer">
+      <column name="TAX" precision="18" scale="0"/>
+    </property>
+    <property name="pricetax" type="java.lang.Integer">
+      <column name="PRICETAX" precision="18" scale="0"/>
+    </property>
+    <property name="createDate" type="java.util.Date">
+      <column length="26" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.util.Date">
+      <column length="26" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18" scale="0"/>
+    </property>
+    <property name="discount" type="java.lang.Integer">
+      <column name="DISCOUNT"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT" precision="52" scale="0"/>
+    </property>
+    <property name="rate" type="java.lang.Double">
+      <column name="RATE" precision="52" scale="0"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="TOTAL_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="taxPrice" type="java.lang.Double">
+      <column name="tax_price" precision="18" scale="0"/>
+    </property>
+    <property name="taxPriceMoney" type="java.lang.Double">
+      <column name="tax_Price_Money" precision="18" scale="0"/>
+    </property>
+    <property name="taxMoney" type="java.lang.Double">
+      <column name="TAX_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SaleProductPo" schema="APP" table="product_count1">
+    <id name="id" type="java.lang.Integer">
+      <column name="product_count_id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="c_no" not-null="true"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="total_money" precision="18"/>
+    </property>
+    <property name="notTotalMoney" type="java.lang.Double">
+      <column name="n_total_money" precision="18"/>
+    </property>
+    <property name="clinchTotalMoney" type="java.lang.Double">
+      <column name="c_total_money" precision="18"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="account" precision="18"/>
+    </property>
+    <property name="clinchAccount" type="java.lang.Double">
+      <column name="c_account" precision="18"/>
+    </property>
+    <property name="notAccount" type="java.lang.Double">
+      <column name="n_account" precision="18"/>
+    </property>
+    <property name="spec" type="java.lang.String">
+      <column length="30" name="spec"/>
+    </property>
+    <property name="unit" type="java.lang.String">
+      <column length="30" name="unit"/>
+    </property>
+    <property name="catalogName" type="java.lang.String">
+      <column length="30" name="catalog_name"/>
+    </property>
+    <property name="name" type="java.lang.String">
+      <column length="30" name="product_name"/>
+    </property>
+    <property name="productId" type="java.lang.Integer">
+      <column name="PRODUCT_ID"/>
+    </property>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SalechaseOrderPo" schema="APP" table="SALE_CHANGE_ORDER">
+    <id name="id" type="java.lang.Integer">
+      <column name="SCQ_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="32" name="S_NO"/>
+    </property>
+    <property name="createDate" type="java.util.Date">
+      <column length="26" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.util.Date">
+      <column length="26" name="MODIFY_DATE"/>
+    </property>
+    <property name="supplier" type="java.lang.String">
+      <column length="30" name="SUPPLIER"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="10" name="FORM_DATE"/>
+    </property>
+    <property name="clearing" type="java.lang.String">
+      <column length="30" name="CLEARING"/>
+    </property>
+    <property name="pay" type="java.lang.String">
+      <column length="30" name="PAY"/>
+    </property>
+    <property name="payTerm" type="java.lang.Integer">
+      <column name="PAY_TIME"/>
+    </property>
+    <property name="receiving" type="java.lang.String">
+      <column length="30" name="RECEIVING"/>
+    </property>
+    <property name="delivery" type="java.lang.String">
+      <column length="30" name="DELIVERY"/>
+    </property>
+    <property name="receivingPhone" type="java.lang.String">
+      <column length="30" name="RECEIVING_PHONE"/>
+    </property>
+    <property name="receivingCode" type="java.lang.String">
+      <column length="30" name="RECEIVING_CODE"/>
+    </property>
+    <property name="receivingAddress" type="java.lang.String">
+      <column length="100" name="RECEIVING_ADDRESS"/>
+    </property>
+    <property name="department" type="java.lang.String">
+      <column length="120" name="DEPARTMENT"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="TOTAL_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="SCQ_ID"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.sale.SalechaseOrderDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="employee_id" lazy="false" name="employee"/>
+    <many-to-one class="org.free_erp.service.entity.base.Customer" column="customer_id" lazy="false" name="customer"/>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+    <many-to-one class="org.free_erp.service.entity.sale.SaleOrderPo" column="ORDER_ID" lazy="false" name="saleOrderPo"/>
+    <many-to-one class="org.free_erp.service.entity.accounting.AffordType" column="AFFORD_TYPE_ID" lazy="false" name="payFashion"/>
+    <many-to-one class="org.free_erp.service.entity.accounting.ClearingType" column="CLEARING_TYPE_ID" lazy="false" name="balanceFashion"/>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SalechaseOrderDetailPo" schema="APP" table="SALE_CHANGE_ORDER_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="SCOD_ID"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="org.free_erp.service.entity.sale.SalechaseOrderPo" column="SCQ_ID" lazy="false" name="mainObject"/>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <property name="taxprice" type="java.lang.Double">
+      <column name="TAXPRICE" precision="18"/>
+    </property>
+    <property name="tax" type="java.lang.Integer">
+      <column name="TAX" precision="18" scale="0"/>
+    </property>
+    <property name="priceTax" type="java.lang.Integer">
+      <column name="PRICE_TAX" precision="18" scale="0"/>
+    </property>
+    <property name="createDate" type="java.util.Date">
+      <column length="26" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.util.Date">
+      <column length="26" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18"/>
+    </property>
+    <property name="discount" type="java.lang.Integer">
+      <column name="DISCOUNT"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column length="24" name="AMOUNT"/>
+    </property>
+    <property name="rate" type="java.lang.Double">
+      <column name="RATE" precision="52" scale="0"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="TOTAL_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="taxPrice" type="java.lang.Double">
+      <column name="tax_price" precision="18" scale="0"/>
+    </property>
+    <property name="taxPriceMoney" type="java.lang.Double">
+      <column name="tax_Price_Money" precision="18" scale="0"/>
+    </property>
+    <property name="taxMoney" type="java.lang.Double">
+      <column name="TAX_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SaleOrderPo" schema="APP" table="SALE_ORDER">
+    <id name="id" type="java.lang.Integer">
+      <column name="ORDER_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.util.Date">
+      <column length="26" name="CREATE_DATE"/>
+    </property>
+    <property name="offersMoney" type="java.lang.Double">
+      <column name="offer_money" precision="18" scale="0"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.util.Date">
+      <column length="26" name="MODIFY_DATE"/>
+    </property>
+    <property name="number" type="java.lang.String">
+      <column length="32" name="S_NO"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="10" name="FORM_DATE"/>
+    </property>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="TOTAL_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="clearing" type="java.lang.String">
+      <column length="30" name="CLEARING"/>
+    </property>
+    <property name="pay" type="java.lang.String">
+      <column length="30" name="PAY"/>
+    </property>
+    <property name="payTerm" type="java.lang.Integer">
+      <column name="PAY_TIME"/>
+    </property>
+    <property name="receiving" type="java.lang.String">
+      <column length="30" name="RECEIVING"/>
+    </property>
+    <property name="delivery" type="java.lang.String">
+      <column length="30" name="DELIVERY"/>
+    </property>
+    <property name="receivingPhone" type="java.lang.String">
+      <column length="30" name="RECEIVING_PHONE"/>
+    </property>
+    <property name="receivingCode" type="java.lang.String">
+      <column length="30" name="RECEIVING_CODE"/>
+    </property>
+    <property name="receivingAddress" type="java.lang.String">
+      <column length="100" name="RECEIVING_ADDRESS"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS"/>
+    </property>
+    <property name="systemStatus" type="java.lang.Integer">
+      <column name="system_status"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="ORDER_ID"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.sale.SaleOrderDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="employee_id" lazy="false" name="employee"/>
+    <many-to-one class="org.free_erp.service.entity.base.Customer" column="customer_id" lazy="false" name="customer"/>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+    <many-to-one class="org.free_erp.service.entity.accounting.AffordType" column="AFFORD_TYPE_ID" lazy="false" name="payFashion"/>
+    <many-to-one class="org.free_erp.service.entity.accounting.ClearingType" column="CLEARING_TYPE_ID" lazy="false" name="balanceFashion"/>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SaleOrderDetailPo" schema="APP" table="SALES_ORDER_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="SQD_ID"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one class="org.free_erp.service.entity.sale.SaleOrderPo" column="ORDER_ID" lazy="false" name="mainObject"/>
+    <property name="taxprice" type="java.lang.Double">
+      <column name="TAXPRICE" precision="18"/>
+    </property>
+    <property name="tax" type="java.lang.Integer">
+      <column name="TAX" precision="18" scale="0"/>
+    </property>
+    <property name="priceTax" type="java.lang.Integer">
+      <column name="PRICE_TAX" precision="18" scale="0"/>
+    </property>
+    <property name="createDate" type="java.util.Date">
+      <column length="26" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.util.Date">
+      <column length="26" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18" scale="0"/>
+    </property>
+    <property name="discount" type="java.lang.Integer">
+      <column name="DISCOUNT"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT" precision="52" scale="0"/>
+    </property>
+    <property name="rate" type="java.lang.Double">
+      <column name="RATE" precision="52" scale="0"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="TOTAL_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="taxPrice" type="java.lang.Double">
+      <column name="tax_price" precision="18" scale="0"/>
+    </property>
+    <property name="taxPriceMoney" type="java.lang.Double">
+      <column name="tax_Price_Money" precision="18" scale="0"/>
+    </property>
+    <property name="taxMoney" type="java.lang.Double">
+      <column name="TAX_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SaleOrderBackPo" schema="APP" table="SALE_ORDER_BACK">
+    <id name="id" type="java.lang.Integer">
+      <column name="SOB_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="32" name="S_NO"/>
+    </property>
+    <property name="offersMoney" type="java.lang.Double">
+      <column name="offer_money" precision="18" scale="0"/>
+    </property>
+    <property name="createDate" type="java.util.Date">
+      <column length="26" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.util.Date">
+      <column length="26" name="MODIFY_DATE"/>
+    </property>
+    <property name="supplier" type="java.lang.String">
+      <column length="30" name="SUPPLIER"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="10" name="FORM_DATE"/>
+    </property>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="TOTAL_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="clearing" type="java.lang.String">
+      <column length="30" name="CLEARING"/>
+    </property>
+    <property name="pay" type="java.lang.String">
+      <column length="30" name="PAY"/>
+    </property>
+    <property name="payTerm" type="java.lang.Integer">
+      <column name="PAY_TIME"/>
+    </property>
+    <property name="receiving" type="java.lang.String">
+      <column length="30" name="RECEIVING"/>
+    </property>
+    <property name="delivery" type="java.lang.String">
+      <column length="30" name="DELIVERY"/>
+    </property>
+    <property name="receivingPhone" type="java.lang.String">
+      <column length="30" name="RECEIVING_PHONE"/>
+    </property>
+    <property name="receivingCode" type="java.lang.String">
+      <column length="30" name="RECEIVING_CODE"/>
+    </property>
+    <property name="receivingAddress" type="java.lang.String">
+      <column length="100" name="RECEIVING_ADDRESS"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS"/>
+    </property>
+    <property name="systemStatus" type="java.lang.Integer">
+      <column name="system_status"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="SOB_ID"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.sale.SaleOrderBackDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="employee_id" lazy="false" name="employee"/>
+    <many-to-one class="org.free_erp.service.entity.base.Customer" column="customer_id" lazy="false" name="customer"/>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" lazy="false" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+    <many-to-one class="org.free_erp.service.entity.sale.SaleOrderPo" column="ORDER_ID" lazy="false" name="order"/>
+    <many-to-one class="org.free_erp.service.entity.sale.SalePo" column="SALE_ID" lazy="false" name="sale"/>
+    <many-to-one class="org.free_erp.service.entity.accounting.AffordType" column="AFFORD_TYPE_ID" lazy="false" name="payFashion"/>
+    <many-to-one class="org.free_erp.service.entity.accounting.ClearingType" column="CLEARING_TYPE_ID" lazy="false" name="balanceFashion"/>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SaleOrderBackDetailPo" schema="APP" table="SALE_ORDER_BACK_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="SOBD_ID"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one class="org.free_erp.service.entity.sale.SaleOrderBackPo" column="SOB_ID" lazy="false" name="mainObject"/>
+    <property name="taxprice" type="java.lang.Double">
+      <column name="TAXPRICE" precision="18"/>
+    </property>
+    <property name="tax" type="java.lang.Integer">
+      <column name="TAX" precision="18" scale="0"/>
+    </property>
+    <property name="priceTax" type="java.lang.String">
+      <column length="30" name="PRICE_TAX"/>
+    </property>
+    <property name="createDate" type="java.util.Date">
+      <column length="26" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.util.Date">
+      <column length="26" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18" scale="0"/>
+    </property>
+    <property name="discount" type="java.lang.Integer">
+      <column name="DISCOUNT"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT" precision="52" scale="0"/>
+    </property>
+    <property name="rate" type="java.lang.Double">
+      <column name="RATE" precision="52" scale="0"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="TOTAL_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="taxPrice" type="java.lang.Double">
+      <column name="tax_price" precision="18" scale="0"/>
+    </property>
+    <property name="taxPriceMoney" type="java.lang.Double">
+      <column name="tax_Price_Money" precision="18" scale="0"/>
+    </property>
+    <property name="taxMoney" type="java.lang.Double">
+      <column name="TAX_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SaleChangeMoneyPo" schema="APP" table="SALE_PRICE">
+    <id name="id" type="java.lang.Integer">
+      <column name="SALEPRICE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="formDate" type="java.util.Date">
+      <column length="10" name="FORM_DATE"/>
+    </property>
+    <property name="number" type="java.lang.String">
+      <column length="32" name="P_NO"/>
+    </property>
+    <property name="createDate" type="java.util.Date">
+      <column length="26" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.util.Date">
+      <column length="26" name="MODIFY_DATE"/>
+    </property>
+    <property name="chargePerson" type="java.lang.String">
+      <column length="32" name="CHARGE_PERSON"/>
+    </property>
+    <property name="department" type="java.lang.String">
+      <column length="32" name="DEPARTMENT"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="T_MONEY" precision="18"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS" not-null="true"/>
+    </property>
+    <property name="systemStatus" type="java.lang.Integer">
+      <column name="system_status"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="SALEPRICE_ID"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.sale.SaleChangeMoneyDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="employee_id" lazy="false" name="employee"/>
+    <many-to-one class="org.free_erp.service.entity.base.Customer" column="customer_id" lazy="false" name="customer"/>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SaleChangeMoneyDetailPo" schema="APP" table="SALE_PRICE_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="SPS_ID"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one class="org.free_erp.service.entity.sale.SaleChangeMoneyPo" column="SALEPRICE_ID" lazy="false" name="mainObject"/>
+    <property name="createDate" type="java.util.Date">
+      <column length="26" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.util.Date">
+      <column length="26" name="MODIFY_DATE"/>
+    </property>
+    <property name="extColumn1" type="java.lang.String">
+      <column name="EXT_COLUMN1"/>
+    </property>
+    <property name="extColumn2" type="java.lang.String">
+      <column name="EXT_COLUMN2"/>
+    </property>
+    <property name="extColumn3" type="java.lang.String">
+      <column name="EXT_COLUMN3"/>
+    </property>
+    <property name="number" type="java.lang.String">
+      <column length="32" name="P_NO"/>
+    </property>
+    <property name="name" type="java.lang.String">
+      <column length="32" name="P_NAME"/>
+    </property>
+    <property name="catalogName" type="java.lang.String">
+      <column length="32" name="CATALOG_NAME"/>
+    </property>
+    <property name="spec" type="java.lang.String">
+      <column length="32" name="SPEC"/>
+    </property>
+    <property name="unit" type="java.lang.String">
+      <column length="32" name="UNIT"/>
+    </property>
+    <property name="oldPrice" type="java.lang.Double">
+      <column name="OLD_PRICE" precision="18"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="total_money" precision="18"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18"/>
+    </property>
+    <property name="oldWholesaleprice" type="java.lang.Double">
+      <column name="OLD_WHOLESALEPRICE" precision="18"/>
+    </property>
+    <property name="whlesale" type="java.lang.Double">
+      <column name="WHOLESALE" precision="18"/>
+    </property>
+    <property name="whlesale1" type="java.lang.Double">
+      <column name="WHOLESALE1" precision="18" scale="0"/>
+    </property>
+    <property name="oldWebsite2" type="java.lang.Double">
+      <column name="OLD_WEBSITE2" precision="18" scale="0"/>
+    </property>
+    <property name="website2" type="java.lang.Double">
+      <column name="WEBSITE2" precision="18" scale="0"/>
+    </property>
+    <property name="oldWebsite3" type="java.lang.Double">
+      <column name="OLD_WEBSITE3" precision="18" scale="0"/>
+    </property>
+    <property name="website3" type="java.lang.Double">
+      <column name="WEBSITE3" precision="18" scale="0"/>
+    </property>
+    <property name="oldWebsite4" type="java.lang.Double">
+      <column name="OLD_WEBSITE4" precision="18" scale="0"/>
+    </property>
+    <property name="website4" type="java.lang.Double">
+      <column name="WEBSITE4" precision="18" scale="0"/>
+    </property>
+    <property name="oldWebsite5" type="java.lang.Double">
+      <column name="OLD_WEBSITE5" precision="18" scale="0"/>
+    </property>
+    <property name="website5" type="java.lang.Double">
+      <column name="WEBSITE5" precision="18" scale="0"/>
+    </property>
+    <property name="oldPurchaseprice" type="java.lang.Double">
+      <column name="OLD_PURCHASEPRICE" precision="18"/>
+    </property>
+    <property name="purchaseprice" type="java.lang.Double">
+      <column name="PURCHASEPRICE" precision="18"/>
+    </property>
+    <property name="SName" type="java.lang.String">
+      <column length="32" name="S_NAME"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT"/>
+    </property>
+    <property name="tmoney" type="java.lang.Double">
+      <column name="TMONEY" precision="18"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SaleQuotePo" schema="APP" table="sale_quoted_price">
+    <id name="id" type="java.lang.Integer">
+      <column name="SALE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="32" name="S_No"/>
+    </property>
+    <property name="offersMoney" type="java.lang.Double">
+      <column name="offer_money" precision="18" scale="0"/>
+    </property>
+    <property name="createDate" type="java.util.Date">
+      <column length="26" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.util.Date">
+      <column length="26" name="MODIFY_DATE"/>
+    </property>
+    <property name="supplier" type="java.lang.String">
+      <column length="30" name="SUPPLIER"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="10" name="FORM_DATE"/>
+    </property>
+    <property name="chargePerson" type="java.lang.String">
+      <column length="30" name="CHARGE_PERSON"/>
+    </property>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="TOTAL_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS"/>
+    </property>
+    <property name="systemStatus" type="java.lang.Integer">
+      <column name="system_status"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="SALE_ID" not-null="true"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.sale.SaleQuoteDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Employee" column="employee_id" lazy="false" name="employee"/>
+    <many-to-one class="org.free_erp.service.entity.base.Customer" column="customer_id" lazy="false" name="customer"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SaleQuoteDetailPo" schema="APP" table="sale_quoted_price_detail">
+    <id name="id" type="java.lang.Integer">
+      <column name="SALE_DETAIL_ID"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="org.free_erp.service.entity.base.Product" column="product_id" lazy="false" name="product"/>
+    <many-to-one class="org.free_erp.service.entity.sale.SaleQuotePo" column="SALE_ID" lazy="false" name="mainObject"/>
+    <property name="taxprice" type="java.lang.Double">
+      <column name="TAXPRICE" precision="18"/>
+    </property>
+    <property name="tax" type="java.lang.Double">
+      <column name="TAX" precision="18"/>
+    </property>
+    <property name="pricetax" type="java.lang.Integer">
+      <column name="PRICETAX" precision="18" scale="0"/>
+    </property>
+    <property name="createDate" type="java.util.Date">
+      <column length="26" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.util.Date">
+      <column length="26" name="MODIFY_DATE"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18" scale="0"/>
+    </property>
+    <property name="discount" type="java.lang.Integer">
+      <column name="DISCOUNT"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT" precision="52" scale="0"/>
+    </property>
+    <property name="rate" type="java.lang.Double">
+      <column name="RATE" precision="52" scale="0"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="TOTAL_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="taxPrice" type="java.lang.Double">
+      <column name="tax_price" precision="18" scale="0"/>
+    </property>
+    <property name="taxPriceMoney" type="java.lang.Double">
+      <column name="tax_Price_Money" precision="18" scale="0"/>
+    </property>
+    <property name="taxMoney" type="java.lang.Double">
+      <column name="TAX_MONEY" precision="18" scale="0"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SaleOutStoragePo" schema="APP" table="SAle_OUT_STORAGE">
+    <id name="id" type="java.lang.Integer">
+      <column name="OUT_STORAGE_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="O_NO" not-null="true"/>
+    </property>
+    <property name="customer" type="java.lang.String">
+      <column length="30" name="CUSTOMER"/>
+    </property>
+    <property name="formDate" type="java.util.Date">
+      <column length="8" name="FORM_DATE"/>
+    </property>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="chargePerson" type="java.lang.String">
+      <column length="30" name="CHARGE_PERSON"/>
+    </property>
+    <property name="department" type="java.lang.String">
+      <column length="30" name="DEPARTMENT"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="T_MONEY" precision="18"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="status" type="java.lang.Integer">
+      <column name="STATUS"/>
+    </property>
+    <set cascade="all,delete-orphan" inverse="false" lazy="false" name="details">
+      <key>
+        <column name="OS_ID" not-null="true"/>
+      </key>
+      <one-to-many class="org.free_erp.service.entity.sale.SaleOutStorageDetailPo"/>
+    </set>
+    <many-to-one class="org.free_erp.service.entity.base.Company" column="company_id" name="company"/>
+    <many-to-one class="org.free_erp.service.entity.base.Storage" column="storage_id" lazy="false" name="storage"/>
+    <many-to-one class="org.free_erp.service.entity.sale.SalePo" column="SALE_ID" lazy="false" name="sale"/>
+  </class>
+  <class name="org.free_erp.service.entity.sale.SaleOutStorageDetailPo" schema="APP" table="SALE_OUT_STORAGE_DETAIL">
+    <id name="id" type="java.lang.Integer">
+      <column name="OS_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="createDate" type="java.sql.Timestamp">
+      <column length="8" name="CREATE_DATE"/>
+    </property>
+    <property name="createdBy" type="java.lang.String">
+      <column length="30" name="CREATED_BY"/>
+    </property>
+    <property name="modifyDate" type="java.sql.Timestamp">
+      <column length="8" name="MODIFY_DATE"/>
+    </property>
+    <property name="number" type="java.lang.String">
+      <column length="15" name="P_NO" not-null="true"/>
+    </property>
+    <property name="name" type="java.lang.String">
+      <column length="30" name="P_NAME" not-null="true"/>
+    </property>
+    <property name="catalogName" type="java.lang.String">
+      <column length="30" name="CATALOG_NAME"/>
+    </property>
+    <property name="spec" type="java.lang.String">
+      <column length="30" name="SPEC"/>
+    </property>
+    <property name="unit" type="java.lang.String">
+      <column length="20" name="UNIT"/>
+    </property>
+    <property name="price" type="java.lang.Double">
+      <column name="PRICE" precision="18"/>
+    </property>
+    <property name="shortName" type="java.lang.String">
+      <column length="30" name="S_NAME"/>
+    </property>
+    <property name="storageAmount" type="java.lang.Double">
+      <column name="STORAGE_AMOUNT"/>
+    </property>
+    <property name="amount" type="java.lang.Double">
+      <column name="AMOUNT"/>
+    </property>
+    <property name="totalMoney" type="java.lang.Double">
+      <column name="T_MONEY" precision="18"/>
+    </property>
+    <property name="comments" type="java.lang.String">
+      <column name="COMMENTS"/>
+    </property>
+    <property name="productId" type="java.lang.Integer">
+      <column name="PRODUCT_ID"/>
+    </property>
+    <many-to-one access="property" cascade="none" class="org.free_erp.service.entity.sale.SaleOutStoragePo" column="out_storage_id" insert="true" lazy="false" name="mainObject" not-null="true" outer-join="auto" update="true"/>
+  </class>
+</hibernate-mapping>

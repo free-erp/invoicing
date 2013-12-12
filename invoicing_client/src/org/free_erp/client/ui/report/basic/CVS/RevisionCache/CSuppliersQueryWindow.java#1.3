@@ -1,0 +1,114 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.jzh.demo.client.report.basic;
+
+import com.jdatabeans.beans.CField;
+import com.jdatabeans.beans.CPanel;
+import com.jdatabeans.beans.data.IDataRow;
+import com.jdatabeans.beans.data.JDataComboBox;
+import com.jdatabeans.beans.data.JDataTableComboBox;
+import com.jdatabeans.beans.data.ObjectDataRow;
+import com.jdatabeans.beans.data.table.ITableModel;
+import com.jzh.demo.client.main.Main;
+import com.jzh.erp.entity.base.Customer;
+import com.jzh.erp.entity.base.CustomerCatalog;
+import com.jzh.erp.entity.system.Permission;
+import com.jzh.erp.entity.vo.DataBaseQueryVO;
+import com.jzh.erp.service.ICustomerService;
+import com.jzh.erp.service.IPermissionsService;
+import java.awt.Dimension;
+import java.util.List;
+import javax.swing.BorderFactory;
+
+/**
+ *
+ * @author liufei
+ */
+public class CSuppliersQueryWindow extends CCustomersQueryWindow
+{
+    public CSuppliersQueryWindow(String title)
+    {
+        super(title);
+    }
+
+    protected int getPermission()
+    {
+        IPermissionsService service = Main.getServiceManager().getPermissionsService();
+        Permission permission = service.getPermission(Main.getMainFrame().getCompany(), Main.getMainFrame().getUser());
+        int per = permission.getBaseSupplier();
+        return per;
+    }
+
+    protected void select()
+    {
+        DataBaseQueryVO vo = new DataBaseQueryVO(Main.getMainFrame().getCompany());
+        vo.setCustomerType("供应商");
+        Object obj = null;
+        obj = this.catalogField.getSelectedItem();
+        if(obj != null && obj instanceof CustomerCatalog)
+        {
+            vo.setCatalog(((CustomerCatalog)obj).getName());
+        }
+        if(this.numberField.getText() != null && !this.numberField.getText().trim().equals(""))
+        {
+            obj = this.numberField.getSelectedItem();
+            if (obj instanceof Customer)
+            {
+                vo.setNumber(((Customer)obj).getNumber());
+            }
+        }
+        if(this.nameField.getText() != null && !this.nameField.getText().trim().equals(""))
+        {
+            vo.setName(this.nameField.getText());
+        }
+        if(this.shortNameField.getText() != null && !this.shortNameField.getText().trim().equals(""))
+        {
+            vo.setShortName(this.shortNameField.getText());
+        }
+        if(this.helpCodeField.getText() != null && !this.helpCodeField.getText().trim().equals(""))
+        {
+            vo.setCode(this.helpCodeField.getText());
+        }
+        ITableModel model = this.dataTable.getTableModel();
+        ICustomerService service = Main.getServiceManager().getCustomerService();
+        this.dataSource.clear();
+        List<Customer> customers = service.findCustomers(vo);
+        for(Customer c : customers)
+        {
+            IDataRow dataRow = new ObjectDataRow(c, "id", null);
+            model.insertDataRow(dataRow);
+        }
+        if(customers == null || customers.size() == 0)
+        {
+            this.clearInfo();
+        }
+    }
+
+    protected CPanel getMainPanel()
+    {
+        CPanel panel = new CPanel();
+        panel.setBorder(BorderFactory.createEtchedBorder());
+		panel.setPreferredSize(new Dimension(700,80));
+		panel.setLayout(null);
+        catalogField = new JDataComboBox(CustomerCatalog.class,Main.getMainFrame().getObjectsPool().getSupplierCatalogs());
+        numberField = new JDataTableComboBox("", Customer.class,Main.getMainFrame().getObjectsPool().getSupplierTable(), "number");
+        nameField = new CField();
+        shortNameField = new CField();
+        helpCodeField = new CField();
+
+        int x = 70;
+        int y = 15;
+        panel.addComponent(catalogField, x, y, 120, 20, "类别", 60);
+        panel.addComponent(numberField, x + 180, y, 100, 20, "供应商编号", 60);
+        panel.addComponent(nameField, x + 340, y, 120, 20, "供应商名称", 60);
+        panel.addComponent(shortNameField, x , y + 25, 120, 20, "供应商简称", 60);
+        panel.addComponent(helpCodeField, x + 180, y + 25, 100, 20, "助记码", 60);
+        panel.addComponent(selectButton, x + 440, y + 25, 75, 25);
+        panel.addComponent(clearButton, x + 520, y + 25, 75, 25);
+
+        return panel;
+    }
+}

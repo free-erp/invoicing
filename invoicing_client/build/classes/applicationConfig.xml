@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<erp-client>
+	<service>
+		<service-style>2</service-style>
+		<service-url>http://192.168.1.15:8080/bserver/services</service-url>
+		<service-namespace>http://service.erp.jzh.com</service-namespace>
+	</service>
+</erp-client>
+
+

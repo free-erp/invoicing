@@ -1,0 +1,6 @@
+
+<config>
+  <login-company_id>1001</login-company_id>
+  <login-user>admin</login-user>
+  <log-update-time>20000</log-update-time>
+</config>

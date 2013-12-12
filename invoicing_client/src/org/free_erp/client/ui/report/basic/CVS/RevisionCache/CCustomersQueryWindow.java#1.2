@@ -1,0 +1,198 @@
+package com.jzh.demo.client.report.basic;
+
+import com.jdatabeans.beans.CField;
+import com.jdatabeans.beans.CPanel;
+import com.jdatabeans.beans.data.IDataRow;
+import com.jdatabeans.beans.data.JDataComboBox;
+import com.jdatabeans.beans.data.JDataTableComboBox;
+import com.jdatabeans.beans.data.ObjectDataRow;
+import com.jdatabeans.beans.data.table.ITableColumnModel;
+import com.jdatabeans.beans.data.table.ITableModel;
+import com.jdatabeans.beans.data.table.JDataTableColumn;
+import com.jzh.demo.client.main.Main;
+import com.jzh.demo.client.report.CBaseQueryWindow;
+import com.jzh.erp.entity.base.Customer;
+import com.jzh.erp.entity.base.CustomerCatalog;
+import com.jzh.erp.entity.vo.DataBaseQueryVO;
+import com.jzh.erp.service.ICustomerService;
+import java.awt.Dimension;
+import java.util.List;
+import javax.swing.BorderFactory;
+
+/**
+ *
+ * @author liufei
+ */
+public class CCustomersQueryWindow extends CBaseQueryWindow
+{
+    private JDataComboBox catalogField;
+    private JDataTableComboBox numberField;
+    private CField nameField;
+    private CField shortNameField;
+    private CField helpCodeField;
+    public CCustomersQueryWindow(String title)
+    {
+        super(title);
+    }
+
+    protected int getPermission()
+    {
+        return 65535;
+    }
+
+    protected void clearInfo()
+    {
+        this.catalogField.setSelectedItem("");
+        this.numberField.setSelectedItem(null);
+        this.nameField.setText("");
+        this.shortNameField.setText("");
+        this.helpCodeField.setText("");
+    }
+
+    protected void select()
+    {
+        DataBaseQueryVO vo = new DataBaseQueryVO(Main.getMainFrame().getCompany());
+        Object obj = null;
+        obj = this.catalogField.getSelectedItem();
+        if(obj != null && obj instanceof CustomerCatalog)
+        {
+            vo.setCatalog(((CustomerCatalog)obj).getName());
+        }
+        if(this.numberField.getText() != null && !this.numberField.getText().trim().equals(""))
+        {
+            obj = this.numberField.getSelectedItem();
+            if (obj instanceof Customer)
+            {
+                vo.setNumber(((Customer)obj).getNumber());
+            }
+        }
+        if(this.nameField.getText() != null && !this.nameField.getText().trim().equals(""))
+        {
+            vo.setName(this.nameField.getText());
+        }
+        if(this.shortNameField.getText() != null && !this.shortNameField.getText().trim().equals(""))
+        {
+            vo.setShortName(this.shortNameField.getText());
+        }
+        if(this.helpCodeField.getText() != null && !this.helpCodeField.getText().trim().equals(""))
+        {
+            vo.setCode(this.helpCodeField.getText());
+        }
+        ITableModel model = this.dataTable.getTableModel();
+        ICustomerService service = Main.getServiceManager().getCustomerService();
+        this.dataSource.clear();
+        List<Customer> customers = service.findCustomers(vo);
+        for(Customer c : customers)
+        {
+            IDataRow dataRow = new ObjectDataRow(c, "id", null);
+            model.insertDataRow(dataRow);
+        }
+        if(customers == null || customers.size() == 0)
+        {
+            this.clearInfo();
+        }
+    }
+
+    protected CPanel getMainPanel()
+    {
+        CPanel panel = new CPanel();
+        panel.setBorder(BorderFactory.createEtchedBorder());
+		panel.setPreferredSize(new Dimension(700,80));
+		panel.setLayout(null);
+        catalogField = new JDataComboBox(CustomerCatalog.class,Main.getMainFrame().getObjectsPool().getCustomerCatalogs());
+        numberField = new JDataTableComboBox("", Customer.class,Main.getMainFrame().getObjectsPool().getCustomerTable(), "number");
+        nameField = new CField();
+        shortNameField = new CField();
+        helpCodeField = new CField();
+
+        int x = 60;
+        int y = 15;
+        panel.addComponent(catalogField, x, y, 120, 20, "类别", 50);
+        panel.addComponent(numberField, x + 170, y, 100, 20, "客户编号", 50);
+        panel.addComponent(nameField, x + 320, y, 120, 20, "客户名称", 50);
+        panel.addComponent(shortNameField, x , y + 25, 120, 20, "客户简称", 50);
+        panel.addComponent(helpCodeField, x + 170, y + 25, 100, 20, "助记码", 50);
+        panel.addComponent(selectButton, x + 440, y + 25, 75, 25);
+        panel.addComponent(clearButton, x + 520, y + 25, 75, 25);
+
+        return panel;
+    }
+
+    @Override
+    protected void initColumns()
+    {
+        ITableColumnModel columnModel = this.dataTable.getTableColumnModel();
+		JDataTableColumn column = new JDataTableColumn();
+		column.setHeaderText("类别编号");
+		column.setColumnName("catalog.number");
+		column.setWidth(60);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("类别名称");
+		column.setColumnName("catalog.name");
+		column.setWidth(80);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("编号");
+		column.setColumnName("number");
+		column.setWidth(60);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("名称");
+		column.setColumnName("name");
+		column.setWidth(120);
+		columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+		column.setHeaderText("地址");
+		column.setColumnName("address");
+		column.setWidth(120);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("联系人");
+		column.setColumnName("contactName");
+		column.setWidth(60);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("手机");
+		column.setColumnName("mobile");
+		column.setWidth(80);
+		columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+		column.setHeaderText("电话");
+		column.setColumnName("phone");
+		column.setWidth(80);
+		columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+		column.setHeaderText("传真");
+		column.setColumnName("fax");
+		column.setWidth(80);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("邮箱");
+		column.setColumnName("email");
+		column.setWidth(100);
+		columnModel.addColumn(column);
+
+		column = new JDataTableColumn();
+		column.setHeaderText("助记码");
+		column.setColumnName("code");
+		column.setWidth(60);
+		columnModel.addColumn(column);
+
+        column = new JDataTableColumn();
+		column.setHeaderText("停用");
+		column.setColumnName("status");
+		column.setWidth(40);
+		column.setValueType(Boolean.class);
+		columnModel.addColumn(column);
+    }
+}
